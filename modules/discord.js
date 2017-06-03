@@ -247,23 +247,23 @@ function displayStats(site,message,siteData,userMessage) {
 				if (statToShow=='tips') emojiToShow = 'moneybag';
 				
 				if (statToShow=='rank') {
-					switch (statValue%10) {
-						case 1:
-							statValue += 'st';
-							break;
-						case 2:
-							statValue += 'nd';
-							break;
-						case 3:
-							statValue += 'rd';
-							break;
-						default:
-							statValue += 'th';
-							break;
+					if (statValue==0) statValue='>100';
+					
+					if (statValue%10==1 && statValue!=11) {
+						statValue += 'st';
+					}
+					else if (statValue%10==2 && statValue!=12) {
+						statValue += 'nd';
+					}
+					else if (statValue%10==3 && statValue!=13) {
+						statValue += 'rd';
+					}
+					else {
+						statValue == 'th';
 					}
 				}
 				
-				if (statToShow!='rank' || statValue!='0th') statArray.push(':'+emojiToShow+':  '+capital(statToShow)+': '+statValue);
+				statArray.push(':'+emojiToShow+':  '+capital(statToShow)+': '+statValue);
 			}
 			
 			var statEmbed = {embed: {
