@@ -21,4 +21,4 @@ module.exports = {
   discordKey: 'DISCORD_KEY_HERE'
 };
 ```
-You can make your own testing bot and use their key, or ask me for BadgeBot's key on Discord.
+For the Discord key, use one from a bot you have made.
