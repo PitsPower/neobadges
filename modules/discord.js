@@ -64,9 +64,19 @@ var commands = [
         action: function(msg, args) {
         	if (args[0]) {
         		var site = args[0];
-            	msg.channel.send('Please wait while we get '+site+"'s badges...").then(function(message) {
-                    displayBadges(site,message);
-            	});
+        		
+        		Site.find({name:site}, function(err, sites) {
+        			if (err) return console.log(err);
+        			
+        			if (sites[0].private) {
+		            	msg.channel.send(capital(site)+' has set their badges to private.');
+        			}
+        			else {
+		            	msg.channel.send('Please wait while we get '+site+"'s badges...").then(function(message) {
+		                    displayBadges(site,message);
+		            	});
+        			}
+        		});
         	}
         	else {
 	        	checkIfLinked(msg, function(sites) {
@@ -84,9 +94,19 @@ var commands = [
     	action: function(msg, args) {
         	if (args[0]) {
         		var site = args[0];
-            	msg.channel.send('Please wait while we get '+site+"'s stats...").then(function(message) {
-                    displayStats(site,message);
-            	});
+        		
+        		Site.find({name:site}, function(err, sites) {
+        			if (err) return console.log(err);
+        			
+        			if (sites[0].private) {
+		            	msg.channel.send(capital(site)+' has set their stats to private.');
+        			}
+        			else {
+		            	msg.channel.send('Please wait while we get '+site+"'s stats...").then(function(message) {
+		                    displayStats(site,message);
+		            	});
+        			}
+        		});
         	}
         	else {
 	        	checkIfLinked(msg, function(sites) {
