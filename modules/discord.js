@@ -41,7 +41,7 @@ var commands = [
 								});
 		            		}
 		            		else {
-		            			msg.channel.send("To make sure "+site+" is actually you, post this as a message on your neocities page (you can delete it later):\n\n`"+sha1(msg.author)+"`\n\nUse the `n!link` command again once you're done.");
+		            			msg.channel.send("To make sure "+site+" is actually you, post this as a message on your neocities page (you can delete it later):\n\n`"+sha1(msg.author)+"`\n\nType `n!link "+site+"` again once you're done.");
 		            		}
 		            	});
 	            	}
