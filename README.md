@@ -12,6 +12,7 @@ Neobadges adds badges/achievements to neocities. Here are all of the badges so f
 | <img src="https://badges.neocities.org/i/badge/zombie.png" height="32"> | Zombie | Update your site after a year of no activity |
 | <img src="https://badges.neocities.org/i/badge/noticed.png" height="32"> | Noticed | Get featured |
 | <img src="https://badges.neocities.org/i/badge/hotcakes.png" height="32"> | Hotcakes | Get 1,000 views in one day |
+| <img src="https://badges.neocities.org/i/badge/discord.png" height="32"> | Discord | Link your discord account to your neocities account |
 
 ### Quick note for devs:
 
