@@ -137,12 +137,16 @@ function displayStats(site,message) {
 					switch (statValue%10) {
 						case 1:
 							statValue += 'st';
+							break;
 						case 2:
 							statValue += 'nd';
+							break;
 						case 3:
 							statValue += 'rd';
+							break;
 						default:
 							statValue += 'th';
+							break;
 					}
 				}
 				
