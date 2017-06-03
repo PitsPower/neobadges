@@ -98,7 +98,7 @@ var commands = [
         		Site.find({name:site}, function(err, sites) {
         			if (err) return console.log(err);
         			
-        			if (sites[0].private) {
+        			if (sites[0] && sites[0].private) {
 		            	msg.channel.send(capital(site)+' has set their stats to private.');
         			}
         			else {
@@ -247,7 +247,7 @@ function displayStats(site,message,siteData,userMessage) {
 				if (statToShow=='tips') emojiToShow = 'moneybag';
 				
 				if (statToShow=='rank') {
-					switch (statValue) {
+					switch (statValue%10) {
 						case 1:
 							statValue += 'st';
 							break;
