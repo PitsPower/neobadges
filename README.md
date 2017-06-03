@@ -1,4 +1,4 @@
-# neobadges
+# <img src="https://files.catbox.moe/5sijc7.png" alt="neobadges">
 
 Neobadges adds badges/achievements to neocities. Here are all of the badges so far:
 
