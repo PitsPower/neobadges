@@ -1,4 +1,4 @@
-# <img src="https://files.catbox.moe/5sijc7.png" alt="neobadges" style="text-align:center">
+# <img src="https://files.catbox.moe/5sijc7.png" alt="neobadges" align="center">
 
 Neobadges adds badges/achievements to neocities. Here are all of the badges so far:
 
