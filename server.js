@@ -24,10 +24,15 @@ app.get('/site/:site', function(req, res) {
 	console.log('Getting stats for '+site+'...');
 		
 	stats.get(site, function(statObject) {
-		badges.add(statObject, site, function(data) {
-			console.log('Finished in '+(new Date().getTime()-currentTime)+'ms!');
-			res.json(data);
-		});
+		if (statObject) {
+			badges.add(statObject, site, function(data) {
+				console.log('Finished in '+(new Date().getTime()-currentTime)+'ms!');
+				res.json(data);
+			});
+		}
+		else {
+			res.send('notfound');
+		}
 	});
 });
 
