@@ -9,6 +9,7 @@ var siteSchema = new Schema({
 	lastDailyCheck: Number,
 	views: Number,
 	daysIdle: Number,
-	discord: String
+	discord: String,
+	profileType: String
 });
 mongoose.model('site', siteSchema);

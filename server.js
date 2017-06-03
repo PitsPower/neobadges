@@ -4,20 +4,23 @@ var app = express();
 var cors = require('cors');
 app.use(cors());
 
+var request = require('request');
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://'+process.env.IP+':27017/neobadges');
 require('./models/site');
 
 var stats = require('./modules/stats');
 var badges = require('./modules/badges');
-require('./modules/discord');
+var profile = require('./modules/profile');
+var discord = require('./modules/discord');
 
 var _log = console.log;
 console.log = function(msg) {
 	_log('['+new Date(new Date().getTime()+1000*60*60).toLocaleTimeString({},{hour12:false})+'] '+msg);
 }
 
-app.get('/site/:site', function(req, res) {
+app.get('/:site', function(req, res) {
 	var currentTime = new Date().getTime();
 	
 	var site = req.params.site;
@@ -33,6 +36,15 @@ app.get('/site/:site', function(req, res) {
 		else {
 			res.send('notfound');
 		}
+	});
+});
+app.get('/:site/profile.png', function(req, res) {
+	var site = req.params.site;
+	console.log('Getting profile for '+site+'...');
+	
+	profile.get(site, discord, function(img) {
+		console.log('Got profile URL: '+img);
+		request(img).pipe(res);
 	});
 });
 
