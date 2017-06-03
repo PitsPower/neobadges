@@ -150,7 +150,7 @@ function displayStats(site,message) {
 					}
 				}
 				
-				statArray.push(':'+emojiToShow+':  '+capital(statToShow)+': '+statValue);
+				if (statToShow!='rank' || statValue!='0th') statArray.push(':'+emojiToShow+':  '+capital(statToShow)+': '+statValue);
 			}
 			
 		    message.edit({embed: {
