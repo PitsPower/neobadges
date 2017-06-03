@@ -121,46 +121,49 @@ var commands = [
     	desc: "Changes what avatar your neobadges profile uses",
     	example: '`n!avatar website`, `n!avatar favicon` or `n!avatar discord`',
     	action: function(msg, args) {
-    		console.log('Changing profile picture...');
-    		
-    		if (args[0]) {
-	    		var type = args[0];
-	    		var possibleTypes = ['website','favicon','discord'];
+    		checkIfLinked(msg, function(sites) {
+	    		console.log('Changing profile picture...');
 	    		
-	    		Site.find({discord:msg.author}, function(err, sites) {
-	    			if (err) return console.log(err);
-	    			
-		    		if (type=='favicon') {
-		    			favicon('https://'+sites[0].name+'.neocities.org', function(err, url) {
-		    				if (err) return console.log(err);
-		    				
-		    				if (url) {
-		    					Site.update({discord:msg.author}, {
+	    		if (args[0]) {
+		    		var type = args[0];
+		    		var possibleTypes = ['website','favicon','discord'];
+		    		
+		    		Site.find({discord:msg.author}, function(err, sites) {
+		    			if (err) return console.log(err);
+		    			
+			    		if (type=='favicon') {
+			    			favicon('https://'+sites[0].name+'.neocities.org', function(err, url) {
+			    				if (err) return console.log(err);
+			    				
+			    				if (url) {
+			    					Site.update({discord:msg.author}, {
+					    				profileType: type
+					    			}, function(err) {
+					    				if (err) return console.log(err);
+					    				msg.channel.send('Profile changed!');
+					    			});
+			    				} else {
+			    					msg.channel.send("You don't have a favicon!");
+			    				}
+			    			});
+			    		} else {
+				    		if (possibleTypes.indexOf(type)>-1) {
+				    			Site.update({discord:msg.author}, {
 				    				profileType: type
 				    			}, function(err) {
 				    				if (err) return console.log(err);
 				    				msg.channel.send('Profile changed!');
 				    			});
-		    				} else {
-		    					msg.channel.send("You don't have a favicon!");
-		    				}
-		    			});
-		    		} else {
-			    		if (possibleTypes.indexOf(type)>-1) {
-			    			Site.update({discord:msg.author}, {
-			    				profileType: type
-			    			}, function(err) {
-			    				if (err) return console.log(err);
-			    				msg.channel.send('Profile changed!');
-			    			});
-			    		} else {
-		    				msg.channel.send('Use '+this.example);
+				    		} else {
+			    				msg.channel.send('Use '+this.example);
+				    		}
 			    		}
-		    		}
-	    		});
-    		} else {
-    			msg.channel.send('Use '+this.example);
-    		}
+		    		});
+	    		}
+	    		else {
+	    			msg.channel.send('Use '+this.example);
+	    		}
+    		});
     	}
     }
 ];
