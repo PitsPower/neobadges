@@ -258,6 +258,7 @@ function displayStats(site,message,siteData,userMessage) {
 					else if (statValue%10==3 && statValue!=13) {
 						statValue += 'rd';
 					}
+					else if (statValue=='>100') {}
 					else {
 						statValue += 'th';
 					}
