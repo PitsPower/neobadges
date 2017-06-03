@@ -259,7 +259,7 @@ function displayStats(site,message,siteData,userMessage) {
 						statValue += 'rd';
 					}
 					else {
-						statValue == 'th';
+						statValue += 'th';
 					}
 				}
 				
