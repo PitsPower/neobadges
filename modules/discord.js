@@ -71,7 +71,7 @@ var commands = [
         	else {
 	        	checkIfLinked(msg, function(sites) {
 	            	msg.channel.send('Please wait while we get your badges...').then(function(message) {
-	                    displayBadges(sites[0].name,message);
+	                    displayBadges(sites[0].name,message,sites[0],msg);
 	            	});
 	        	});
         	}
@@ -91,7 +91,7 @@ var commands = [
         	else {
 	        	checkIfLinked(msg, function(sites) {
 	            	msg.channel.send('Please wait while we get your stats...').then(function(message) {
-	                    displayStats(sites[0].name,message);
+	                    displayStats(sites[0].name,message,sites[0],msg);
 	            	});
 	        	});
         	}
@@ -210,7 +210,7 @@ module.exports.getProfile = function(site, cb) {
 	});
 }
 
-function displayStats(site,message) {
+function displayStats(site,message,siteData,userMessage) {
 	stats.get(site, function(statObject) {
 		if (statObject) {
 			var statArray = [];
@@ -227,7 +227,7 @@ function displayStats(site,message) {
 				if (statToShow=='tips') emojiToShow = 'moneybag';
 				
 				if (statToShow=='rank') {
-					switch (statValue%10) {
+					switch (statValue) {
 						case 1:
 							statValue += 'st';
 							break;
@@ -246,12 +246,19 @@ function displayStats(site,message) {
 				if (statToShow!='rank' || statValue!='0th') statArray.push(':'+emojiToShow+':  '+capital(statToShow)+': '+statValue);
 			}
 			
-		    message.edit({embed: {
+			var statEmbed = {embed: {
 		    	color: 16762454,
 		        title: '__**'+capital(site)+"'s Stats**__",
 		        url: 'https://neocities.org/site/'+site,
 		        description: statArray.join('\n')
-		    }});
+		    }};
+		    
+		    if (siteData && siteData.private) {
+		    	userMessage.author.send(statEmbed);
+		    }
+		    else {
+		    	message.edit(statEmbed);
+		    }
 		}
 		else {
 			message.edit("That website doesn't exist!");
@@ -259,18 +266,25 @@ function displayStats(site,message) {
 	});
 }
 
-function displayBadges(site,message) {
+function displayBadges(site,message,siteData,userMessage) {
 	stats.get(site, function(statObject) {
 		if (statObject) {
 			badges.add(statObject, site, function(data) {
-			    message.edit({embed: {
+				var statEmbed = {embed: {
 			    	color: 16762454,
 			        title: '__**'+capital(site)+"'s Badges**__",
 		        	url: 'https://neocities.org/site/'+site,
 			        description: data.badges.map(function(badge) {
 	    		        return ':medal:  '+capital(badge)+' - '+badges.description(badge);
 	    		    }).join('\n')
-			    }});
+			    }}
+				
+				if (siteData && siteData.private) {
+			    	userMessage.author.send(statEmbed);
+			    }
+			    else {
+			    	message.edit(statEmbed);
+			    }
 			});
 		}
 		else {
