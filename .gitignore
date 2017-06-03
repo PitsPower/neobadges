@@ -58,3 +58,4 @@ typings/
 .env
 
 modules/config.js
+data
