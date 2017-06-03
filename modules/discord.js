@@ -250,4 +250,5 @@ client.on('message', function(msg) {
 	}
 });
 
-client.login('MzE5OTA5MDgyMTkyNTQzNzY2.DBHyUw.pbcXeF9XN00aSJiRIg97Rc7pgFI');
+var config = require('./config');
+client.login(config.discordKey);
