@@ -35,7 +35,8 @@ var commands = [
 								    msg.channel.send(msg.author + ' has linked their account to '+site+'! Enjoy the badge!');
 								});
 								Site.update({name:site}, {
-								    discord: msg.author
+								    discord: msg.author,
+								    private: false
 								}, function(err) {
 								    if (err) return console.log(err);
 								    console.log('Put discord name in database!');
@@ -127,42 +128,67 @@ var commands = [
 	    		if (args[0]) {
 		    		var type = args[0];
 		    		var possibleTypes = ['website','favicon','discord'];
-		    		
-		    		Site.find({discord:msg.author}, function(err, sites) {
-		    			if (err) return console.log(err);
-		    			
-			    		if (type=='favicon') {
-			    			favicon('https://'+sites[0].name+'.neocities.org', function(err, url) {
-			    				if (err) return console.log(err);
-			    				
-			    				if (url) {
-			    					Site.update({discord:msg.author}, {
-					    				profileType: type
-					    			}, function(err) {
-					    				if (err) return console.log(err);
-					    				msg.channel.send('Profile changed!');
-					    			});
-			    				} else {
-			    					msg.channel.send("You don't have a favicon!");
-			    				}
-			    			});
-			    		} else {
-				    		if (possibleTypes.indexOf(type)>-1) {
-				    			Site.update({discord:msg.author}, {
+	    			
+		    		if (type=='favicon') {
+		    			favicon('https://'+sites[0].name+'.neocities.org', function(err, url) {
+		    				if (err) return console.log(err);
+		    				
+		    				if (url) {
+		    					Site.update({discord:msg.author}, {
 				    				profileType: type
 				    			}, function(err) {
 				    				if (err) return console.log(err);
 				    				msg.channel.send('Profile changed!');
 				    			});
-				    		} else {
-			    				msg.channel.send('Use '+this.example);
-				    		}
+		    				} else {
+		    					msg.channel.send("You don't have a favicon!");
+		    				}
+		    			});
+		    		} else {
+			    		if (possibleTypes.indexOf(type)>-1) {
+			    			Site.update({discord:msg.author}, {
+			    				profileType: type
+			    			}, function(err) {
+			    				if (err) return console.log(err);
+			    				msg.channel.send('Your profile has been changed.');
+			    			});
+			    		} else {
+		    				msg.channel.send('Use '+this.example);
 			    		}
-		    		});
+		    		}
 	    		}
 	    		else {
 	    			msg.channel.send('Use '+this.example);
 	    		}
+    		});
+    	}
+    },
+    {
+    	name: 'view',
+    	desc: "Allows you to set your stats and badges to public or private",
+    	example: '`n!view public` or `n!view private`',
+    	action: function(msg, args) {
+    		checkIfLinked(msg, function() {
+    			console.log('Updating view...');
+    			
+    			if (args[0]) {
+    				var type = args[0];
+    				var possibleTypes = ['public','private'];
+    				
+    				if (possibleTypes.indexOf(type)>-1) {
+    					Site.update({discord:msg.author}, {
+    						private: type=='private'
+		    			}, function(err) {
+		    				if (err) return console.log(err);
+		    				msg.channel.send('Your view has been changed.');
+		    			});
+    				} else {
+	    				msg.channel.send('Use '+this.example);
+    				}
+    			}
+    			else {
+	    			msg.channel.send('Use '+this.example);
+    			}
     		});
     	}
     }

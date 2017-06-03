@@ -10,6 +10,7 @@ var siteSchema = new Schema({
 	views: Number,
 	daysIdle: Number,
 	discord: String,
+	private: Boolean,
 	profileType: String
 });
 mongoose.model('site', siteSchema);
