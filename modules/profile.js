@@ -41,6 +41,16 @@ function getWebsiteProfile(site, cb) {
 function getFavicon(site, cb) {
     favicon('https://'+site+'.neocities.org', function(err, url) {
         if (err) return console.log(err);
-        cb(url);
+        if (url.indexOf('http')>-1) {
+            cb(url);
+        }
+        else {
+            if (url[0]=='/') {
+                cb('https://'+site+'.neocities.org'+url);
+            }
+            else {
+                cb('https://'+site+'.neocities.org/'+url);
+            }
+        }
     });
 }
