@@ -17,6 +17,7 @@ module.exports.get = function(site, discord, cb) {
         if (siteData) {
             if (siteData.profileType) {
                 console.log('Profile option found!');
+                console.log(siteData);
                 
                 if (siteData.profileType=='website') getWebsiteProfile(site,cb);
                 if (siteData.profileType=='favicon') getFavicon(site,cb);
@@ -35,11 +36,15 @@ module.exports.get = function(site, discord, cb) {
         else {
             console.log("Website doesn't exist in database.");
             
-            stats.get(site, function(statObject) {
-                if (statObject) {
-                console.log(site+' does exist. Adding!');
-                    badges.add(statObject, site, function() {
-                        getWebsiteProfile(site, cb);
+            request('https://'+site+'.neocities.org', function(err, response, body) {
+                if (err) return console.log(err);
+                
+                if (response.statusCode==200) {
+                    console.log(site+' does exist. Adding!');
+                    stats.get(site, function(statObject) {
+                        badges.add(statObject, site, function() {
+                            getWebsiteProfile(site, cb);
+                        });
                     });
                 }
             });
