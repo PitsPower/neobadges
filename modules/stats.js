@@ -9,6 +9,7 @@ var cache;
 
 module.exports.get = function(site, cb, noLog) {
 	if (!site.name) site={name:site};
+	site.name = site.name.toLowerCase();
 	
 	getCache(site.name, function(c) {
 		if (!c) {
