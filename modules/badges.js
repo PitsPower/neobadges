@@ -207,54 +207,56 @@ module.exports.check = function(cb) {
 		    var site = sites[i];
 		    
 		    stats.get(site, function(statObject, site) {
-		        for (var i=0;i<allBadges.length;i++) {
-    				var badge = allBadges[i];
-    				var complete = false;
-    				
-    				if (site.badges.indexOf(badge.name)==-1) {
-	    				if (badge.type=='idleFor') {
-	    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
-	    					if (site.daysIdle>=badge.days && statObject.daysIdle<badge.days) {
-	    					    complete = true;
-	    					}
+		    	if (statObject) {
+		    		for (var i=0;i<allBadges.length;i++) {
+	    				var badge = allBadges[i];
+	    				var complete = false;
+	    				
+	    				if (site.badges.indexOf(badge.name)==-1) {
+		    				if (badge.type=='idleFor') {
+		    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
+		    					if (site.daysIdle>=badge.days && statObject.daysIdle<badge.days) {
+		    					    complete = true;
+		    					}
+		    				}
+		    				if (badge.type=='daily') {
+		    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
+		    				    if (site.lastDailyCheck) {
+						            if (statObject[badge.stat] > site[badge.stat]+1000) {
+						                complete = true;
+						            }
+		    				        if (new Date().getTime() - site.lastDailyCheck > 1000*60*60*24) {
+		        			            var dailyUpdate = {lastDailyCheck:new Date().getTime()};
+		        			            dailyUpdate[badge.stat] = statObject[badge.stat];
+		        			            
+		    				            Site.update({name:site.name}, dailyUpdate, {upsert: true}, function(err) {
+		                					if (err) return console.log(err);
+		                				});
+		    				        }
+		    				    }
+		    				    else {
+		    				        Site.update({name:site.name}, {$set:{
+		    				            lastDailyCheck: new Date().getTime(),
+		    				            views: statObject.views
+		    						}}, {upsert: true}, function(err) {
+		    							if (err) return console.log(err);
+		    						});
+		    				    }
+		    				}
 	    				}
-	    				if (badge.type=='daily') {
-	    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
-	    				    if (site.lastDailyCheck) {
-					            if (statObject[badge.stat] > site[badge.stat]+1000) {
-					                complete = true;
-					            }
-	    				        if (new Date().getTime() - site.lastDailyCheck > 1000*60*60*24) {
-	        			            var dailyUpdate = {lastDailyCheck:new Date().getTime()};
-	        			            dailyUpdate[badge.stat] = statObject[badge.stat];
-	        			            
-	    				            Site.update({name:site.name}, dailyUpdate, {upsert: true}, function(err) {
-	                					if (err) return console.log(err);
-	                				});
-	    				        }
-	    				    }
-	    				    else {
-	    				        Site.update({name:site.name}, {$set:{
-	    				            lastDailyCheck: new Date().getTime(),
-	    				            views: statObject.views
-	    						}}, {upsert: true}, function(err) {
-	    							if (err) return console.log(err);
-	    						});
-	    				    }
+	    				
+	    				if (complete) {
+							Site.update({name:site.name}, {
+								$addToSet: {
+									badges: badge.name
+								}
+							}, {upsert: true}, function(err) {
+								if (err) return console.log(err);
+								console.log('Awarded a badge to '+site.name+'!');
+							});
 	    				}
-    				}
-    				
-    				if (complete) {
-						Site.update({name:site.name}, {
-							$addToSet: {
-								badges: badge.name
-							}
-						}, {upsert: true}, function(err) {
-							if (err) return console.log(err);
-							console.log('Awarded a badge to '+site.name+'!');
-						});
-    				}
-    			}
+	    			}
+		    	}
 		    },true);
 		}
 	});

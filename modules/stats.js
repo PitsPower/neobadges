@@ -12,8 +12,8 @@ module.exports.get = function(site, cb, noLog) {
 	
 	getCache(site.name, function(c) {
 		if (!c) {
-			cb();
-			return noLog?0:console.log('Website does not exist! Terminating...');
+			noLog?0:console.log('Website '+site.name+' does not exist! Terminating...');
+			return cb();
 		}
 		cache = c;
 		

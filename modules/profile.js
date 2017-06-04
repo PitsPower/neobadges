@@ -3,6 +3,9 @@ var request = require('request');
 var cheerio = require('cheerio');
 var favicon = require('favicon');
 
+var stats = require('./stats');
+var badges = require('./badges');
+
 var Site = mongoose.model('site');
 
 module.exports.get = function(site, discord, cb) {
@@ -30,15 +33,16 @@ module.exports.get = function(site, discord, cb) {
             }
         }
         else {
-            console.log("Website doesn't exist. Creating a record!");
+            console.log("Website doesn't exist in database.");
             
-            var siteModel = new Site({
-				name: site
-			});
-			siteModel.save(function(err) {
-				if (err) return console.log(err);
-                getWebsiteProfile(site, cb);
-			});
+            stats.get(site, function(statObject) {
+                if (statObject) {
+                console.log(site+' does exist. Adding!');
+                    badges.add(statObject, site, function() {
+                        getWebsiteProfile(site, cb);
+                    });
+                }
+            });
         }
     });
 }
