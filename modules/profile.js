@@ -20,17 +20,25 @@ module.exports.get = function(site, discord, cb) {
                 if (siteData.profileType=='discord') discord.getProfile(site,cb);
             } else {
                 console.log('No profile option found. Setting option to default...');
+                    
                 Site.update({name:site}, {
                     profileType: 'website'
                 }, function(err) {
                     if (err) return console.log(err);
-                    
                     getWebsiteProfile(site, cb);
                 });
             }
         }
         else {
-            console.log("Website doesn't exist. Terminating!");
+            console.log("Website doesn't exist. Creating a record!");
+            
+            var siteModel = new Site({
+				name: site
+			});
+			siteModel.save(function(err) {
+				if (err) return console.log(err);
+                getWebsiteProfile(site, cb);
+			});
         }
     });
 }

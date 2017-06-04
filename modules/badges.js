@@ -99,7 +99,9 @@ module.exports.add = function(statObject, site, cb) {
 			console.log('No site data found! Adding site to database...');
 			var siteModel = new Site({
 				name: site,
-				badges: badges,
+				badges: badges.map(function(badge) {
+					return badge.name
+				}),
 				lastCheck: new Date().getTime(),
 				daysIdle: statObject.daysIdle
 			});
