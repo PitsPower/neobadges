@@ -214,13 +214,13 @@ module.exports.check = function(cb) {
 	    				
 	    				if (site.badges.indexOf(badge.name)==-1) {
 		    				if (badge.type=='idleFor') {
-		    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
+		    				    // console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
 		    					if (site.daysIdle>=badge.days && statObject.daysIdle<badge.days) {
 		    					    complete = true;
 		    					}
 		    				}
 		    				if (badge.type=='daily') {
-		    				    console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
+		    				    // console.log('Checking if '+site.name+' can get the '+badge.name+' badge...');
 		    				    if (site.lastDailyCheck) {
 						            if (statObject[badge.stat] > site[badge.stat]+1000) {
 						                complete = true;
