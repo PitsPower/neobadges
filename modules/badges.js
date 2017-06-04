@@ -73,6 +73,8 @@ var Site = mongoose.model('site');
 module.exports.add = function(statObject, site, cb) {
 	var badges = [];
 	
+	site = site.toLowerCase();
+	
 	console.log('Adding badges...');
 	
 	for (var i=0;i<allBadges.length;i++) {
