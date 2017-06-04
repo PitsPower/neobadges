@@ -30,7 +30,7 @@ module.exports.get = function(site, discord, cb) {
             }
         }
         else {
-            console.log("Website doesn't exis. Terminating!");
+            console.log("Website doesn't exist. Terminating!");
         }
     });
 }
