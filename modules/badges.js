@@ -79,10 +79,16 @@ module.exports.add = function(statObject, site, cb) {
 		var badge = allBadges[i];
 		
 		if (badge.type=='greaterOrEqual') {
-			if (statObject[badge.stat]>=badge.value) badges.push(badge.name);
+			if (statObject[badge.stat]>=badge.value) badges.push({
+	        	name: badge.name,
+	        	desc: badge.desc
+	        });
 		}
 		if (badge.type=='true') {
-			if (statObject[badge.stat]) badges.push(badge.name);
+			if (statObject[badge.stat]) badges.push({
+	        	name: badge.name,
+	        	desc: badge.desc
+	        });
 		}
 	}
 	
@@ -107,27 +113,39 @@ module.exports.add = function(statObject, site, cb) {
 		else {
 			var siteData = sites[0];
 			
-			if (siteData.badges.indexOf('discord')>-1) badges.push('discord');
-			
 			for (var i=0;i<allBadges.length;i++) {
 				var badge = allBadges[i];
 				var complete = false;
 				
+				if (siteData.badges.indexOf('discord')>-1 && badge.name=='discord') badges.push({
+		        	name: badge.name,
+		        	desc: badge.desc
+		        });
+				
 				if (badge.type=='idleFor') {
 				    if (siteData.daysIdle >= badge.days) {
 					    if (statObject.daysIdle < badge.days) {
-					        badges.push(badge.name);
+					        badges.push({
+					        	name: badge.name,
+					        	desc: badge.desc
+					        });
 					        complete = true;
 					    }
 					}
 					else if(siteData.badges.indexOf(badge.name)>-1) {
-					    badges.push(badge.name);
+					    badges.push({
+				        	name: badge.name,
+				        	desc: badge.desc
+				        });
 					}
 				}
 				if (badge.type=='daily') {
 				    if (siteData.lastDailyCheck) {
 			            if (statObject[badge.stat] > siteData[badge.stat]+1000) {
-			                badges.push(badge.name);
+			                badges.push({
+					        	name: badge.name,
+					        	desc: badge.desc
+					        });
 			                complete = true;
 			            }
 			            
@@ -140,7 +158,10 @@ module.exports.add = function(statObject, site, cb) {
             				});
 				        }
 				        else if (siteData.badges.indexOf(badge.name)>-1 && !complete) {
-				            badges.push(badge.name);
+				            badges.push({
+					        	name: badge.name,
+					        	desc: badge.desc
+					        });
 				        }
 				    }
 				    else {

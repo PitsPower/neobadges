@@ -296,7 +296,7 @@ function displayBadges(site,message,siteData,userMessage) {
 			        title: '__**'+capital(site)+"'s Badges**__",
 		        	url: 'https://neocities.org/site/'+site,
 			        description: data.badges.map(function(badge) {
-	    		        return ':medal:  '+capital(badge)+' - '+badges.description(badge);
+	    		        return ':medal:  '+capital(badge.name)+' - '+badge.desc;
 	    		    }).join('\n')
 			    }}
 				
