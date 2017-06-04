@@ -11,21 +11,26 @@ module.exports.get = function(site, discord, cb) {
         
         var siteData = sites[0];
         
-        if (siteData.profileType) {
-            console.log('Profile option found!');
-            
-            if (siteData.profileType=='website') getWebsiteProfile(site,cb);
-            if (siteData.profileType=='favicon') getFavicon(site,cb);
-            if (siteData.profileType=='discord') discord.getProfile(site,cb);
-        } else {
-            console.log('No profile option found. Setting option to default...');
-            Site.update({name:site}, {
-                profileType: 'website'
-            }, function(err) {
-                if (err) return console.log(err);
+        if (siteData) {
+            if (siteData.profileType) {
+                console.log('Profile option found!');
                 
-                getWebsiteProfile(site, cb);
-            });
+                if (siteData.profileType=='website') getWebsiteProfile(site,cb);
+                if (siteData.profileType=='favicon') getFavicon(site,cb);
+                if (siteData.profileType=='discord') discord.getProfile(site,cb);
+            } else {
+                console.log('No profile option found. Setting option to default...');
+                Site.update({name:site}, {
+                    profileType: 'website'
+                }, function(err) {
+                    if (err) return console.log(err);
+                    
+                    getWebsiteProfile(site, cb);
+                });
+            }
+        }
+        else {
+            console.log("Website doesn't exis. Terminating!");
         }
     });
 }
