@@ -9,6 +9,8 @@ var badges = require('./badges');
 var Site = mongoose.model('site');
 
 module.exports.get = function(site, discord, cb) {
+    site = site.toLowerCase();
+    
     Site.find({name:site}, function(err, sites) {
         if (err) return console.log(err);
         
