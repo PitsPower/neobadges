@@ -17,6 +17,9 @@ client.on('ready', function() {
 	client.user.setGame('n!help');
 	console.log('BadgeBot is active!');
 });
+client.on('error', function(err) {
+	console.log(err);
+});
 
 var commands = [
     {

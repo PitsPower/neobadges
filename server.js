@@ -7,7 +7,18 @@ app.use(cors());
 var request = require('request');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://'+process.env.IP+':27017/neobadges');
+
+var mongoUrl = 'mongodb://'+process.env.IP+':27017/neobadges';
+if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
+    mongoUrl = 'mongodb://' +
+    process.env.OPENSHIFT_MONGODB_DB_USERNAME + ':' +
+    process.env.OPENSHIFT_MONGODB_DB_PASSWORD + '@' +
+    process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+    process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+    process.env.OPENSHIFT_APP_NAME;
+}
+mongoose.connect(mongoUrl);
+
 require('./models/site');
 
 var stats = require('./modules/stats');
@@ -57,7 +68,10 @@ function checkLoop() {
 }
 badges.check(checkLoop);
 
+var ip = process.env.OPENSHIFT_NODEJS_IP || process.env.IP;
+var port = process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT;
+
 var server = require('http').createServer(app);
-server.listen(process.env.PORT, process.env.IP, function() {
+server.listen(port, ip, function() {
 	console.log('Server started!');
 });
