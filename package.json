@@ -9,6 +9,7 @@
     "async": "~0.2.8",
     "cheerio": "^1.0.0-rc.1",
     "cors": "^2.8.3",
+    "discord.js": "^11.1.0",
     "express": "^3.2.6",
     "favicon": "0.0.2",
     "mongoose": "^4.10.4",
