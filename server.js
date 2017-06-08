@@ -24,7 +24,7 @@ require('./models/site');
 var stats = require('./modules/stats');
 var badges = require('./modules/badges');
 var profile = require('./modules/profile');
-var discord = require('./modules/discord');
+// var discord = require('./modules/discord');
 
 var _log = console.log;
 console.log = function(msg) {
