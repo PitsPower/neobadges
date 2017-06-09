@@ -104,6 +104,7 @@ module.exports.add = function(statObject, site, cb) {
 				badges: badges.map(function(badge) {
 					return badge.name
 				}),
+				private: false,
 				lastCheck: new Date().getTime(),
 				daysIdle: statObject.daysIdle
 			});
