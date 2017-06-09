@@ -71,7 +71,7 @@ var commands = [
         		Site.find({name:site}, function(err, sites) {
         			if (err) return console.log(err);
         			
-        			if (sites[0].private) {
+        			if (sites[0] && sites[0].private) {
 		            	msg.channel.send(capital(site)+' has set their badges to private.');
         			}
         			else {
